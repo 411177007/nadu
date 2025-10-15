@@ -1,0 +1,78 @@
+# Dependencies
+nadu-website/node_modules/
+nadu-website/.pnpm-store/
+
+# Next.js
+nadu-website/.next/
+nadu-website/out/
+nadu-website/build/
+nadu-website/dist/
+
+# Production
+nadu-website/.vercel
+
+# Debug
+nadu-website/npm-debug.log*
+nadu-website/yarn-debug.log*
+nadu-website/yarn-error.log*
+nadu-website/pnpm-debug.log*
+nadu-website/.pnpm-debug.log*
+
+# Local env files
+nadu-website/.env
+nadu-website/.env.local
+nadu-website/.env.development.local
+nadu-website/.env.test.local
+nadu-website/.env.production.local
+
+# TypeScript
+nadu-website/*.tsbuildinfo
+nadu-website/next-env.d.ts
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Testing
+nadu-website/coverage/
+nadu-website/.nyc_output/
+
+# Misc
+nadu-website/.turbo
+
+# Database and Security
+nadu-api/db-config.php
+nadu-api/.env
+nadu-api/.env.local
+nadu-api/.env.production
+
+# Docker
+.env.docker
+docker-compose.override.yml
+
+# Uploaded images (optional - remove if you want to track images)
+nadu-api/images/*
+!nadu-api/images/.gitkeep
+
+# Logs
+*.log
+logs/
+*.log.*
+
+# OS
+Thumbs.db
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.swp
+*~.nib
+

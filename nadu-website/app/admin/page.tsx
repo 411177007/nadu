@@ -17,7 +17,7 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetch('http://localhost/nadu-api/analytics-api.php')
+    fetch('/nadu-api/analytics-api.php')
       .then(res => res.json())
       .then(data => {
         if (data.success && data.data) {
@@ -25,7 +25,10 @@ export default function AdminDashboard() {
         }
         setLoading(false)
       })
-      .catch(() => setLoading(false))
+      .catch((error) => {
+        console.error('Analytics API Error:', error)
+        setLoading(false)
+      })
   }, [])
 
   return (
@@ -92,19 +95,44 @@ export default function AdminDashboard() {
                 <CardDescription>過去30天的銷售趨勢</CardDescription>
               </CardHeader>
               <CardContent className="pl-2">
-                <div className="h-[200px] w-full">
+                <div className="h-[300px] w-full">
                   {loading ? (
                     <div className="flex items-center justify-center h-full text-muted-foreground">載入中...</div>
-                  ) : (
-                    <ChartContainer config={{}}>
-                      <LineChart data={stats.daily || []} margin={{ top: 10, right: 20, left: 0, bottom: 0 }}>
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="date" />
-                        <YAxis />
-                        <Tooltip />
-                        <Line type="monotone" dataKey="revenue" stroke="#8884d8" name="銷售額" />
+                  ) : (stats.daily && stats.daily.length > 0) ? (
+                    <ResponsiveContainer width="100%" height="100%">
+                      <LineChart data={stats.daily} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
+                        <XAxis 
+                          dataKey="date" 
+                          tick={{ fontSize: 12 }}
+                          tickFormatter={(value) => {
+                            const date = new Date(value);
+                            return `${date.getMonth() + 1}/${date.getDate()}`;
+                          }}
+                        />
+                        <YAxis 
+                          tick={{ fontSize: 12 }}
+                          tickFormatter={(value) => `$${value}`}
+                        />
+                        <Tooltip 
+                          formatter={(value: any) => [`NT$ ${Number(value).toLocaleString()}`, '銷售額']}
+                          labelFormatter={(label) => `日期: ${label}`}
+                        />
+                        <Line 
+                          type="monotone" 
+                          dataKey="revenue" 
+                          stroke="#f97316" 
+                          strokeWidth={2}
+                          dot={{ fill: '#f97316', r: 4 }}
+                          activeDot={{ r: 6 }}
+                          name="銷售額" 
+                        />
                       </LineChart>
-                    </ChartContainer>
+                    </ResponsiveContainer>
+                  ) : (
+                    <div className="flex items-center justify-center h-full text-muted-foreground">
+                      暫無銷售數據
+                    </div>
                   )}
                 </div>
               </CardContent>
@@ -118,15 +146,29 @@ export default function AdminDashboard() {
                 <div className="space-y-4">
                   {loading ? (
                     <div className="text-muted-foreground">載入中...</div>
-                  ) : (stats.topProducts || []).slice(0, 3).map((product: any, index: number) => (
-                    <div key={index} className="flex items-center">
-                      <div className="w-2 h-2 rounded-full bg-primary mr-2"></div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium truncate">{product.name}</p>
+                  ) : (stats.topProducts && stats.topProducts.length > 0) ? (
+                    (stats.topProducts || []).slice(0, 5).map((product: any, index: number) => (
+                      <div key={index} className="flex items-center gap-3">
+                        <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary font-bold text-sm">
+                          {index + 1}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium truncate">{product.name}</p>
+                          <p className="text-xs text-muted-foreground">
+                            NT$ {Number(product.revenue).toLocaleString()}
+                          </p>
+                        </div>
+                        <div className="text-right">
+                          <div className="text-sm font-medium">{product.sales} 件</div>
+                          <div className="text-xs text-muted-foreground">{product.order_count} 訂單</div>
+                        </div>
                       </div>
-                      <div className="text-sm font-medium">{product.sales} 件</div>
+                    ))
+                  ) : (
+                    <div className="text-sm text-muted-foreground text-center py-4">
+                      暫無熱門商品數據
                     </div>
-                  ))}
+                  )}
                 </div>
               </CardContent>
             </Card>

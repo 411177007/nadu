@@ -25,7 +25,17 @@ function verify_jwt($jwt, $secret) {
     return $payloadArr;
 }
 
-$secret = 'nadu-admin-secret-key';
+// 載入配置檔案以獲取 JWT Secret
+$config_file = __DIR__ . '/db-config.php';
+if (file_exists($config_file)) {
+    $config = require $config_file;
+    $secret = $config['jwt_secret'];
+} else {
+    // 預設值（僅供開發使用，生產環境請務必使用 db-config.php）
+    $secret = 'nadu-admin-secret-key-please-change-in-production';
+    error_log('Warning: Using default JWT secret. Please create db-config.php');
+}
+
 $action = $_GET['action'] ?? '';
 
 if ($action === 'login') {

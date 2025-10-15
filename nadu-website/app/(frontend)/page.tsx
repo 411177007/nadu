@@ -23,15 +23,18 @@ export default function Home() {
   useEffect(() => {
     setLoading(true)
     Promise.all([
-      apiGet<{ categories: Category[] }>("/nadu-api/category-api.php?action=list"),
+      apiGet<Category[]>("/nadu-api/category-api.php?action=list"),
       apiGet<{ products: Product[] }>("/nadu-api/product-api.php?action=list&limit=8"),
       apiGet<{ image: string | null }>("/nadu-api/hero-image-api.php?action=get")
     ]).then(([catRes, prodRes, heroRes]) => {
-      setCategories(Array.isArray(catRes) ? catRes : catRes.categories || [])
-      setFeaturedProducts(prodRes.products)
+      setCategories(Array.isArray(catRes) ? catRes : [])
+      setFeaturedProducts(prodRes.products || [])
       setHeroImage(heroRes.image)
       setLoading(false)
-    }).catch(() => setLoading(false))
+    }).catch((error) => {
+      console.error('API Error:', error)
+      setLoading(false)
+    })
   }, [])
 
   useEffect(() => {

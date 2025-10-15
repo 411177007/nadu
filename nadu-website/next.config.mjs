@@ -13,7 +13,7 @@ const nextConfig = {
     return [
       {
         source: '/nadu-api/:path*',
-        destination: 'http://localhost/nadu-api/:path*',
+        destination: 'http://localhost/nadu/nadu-api/:path*',
       },
     ]
   },
