@@ -350,7 +350,7 @@ POST /nadu-api/cart-api.php?action=remove               # 移除商品
 
 ## 👨‍💻 作者
 
-**Nadu Development Team**
+411177007
 
 ---
 
@@ -368,8 +368,7 @@ POST /nadu-api/cart-api.php?action=remove               # 移除商品
 ## 📞 聯絡方式
 
 如有任何問題或建議，歡迎聯絡：
-- Email: your-email@example.com
-- GitHub Issues: [提交問題](https://github.com/你的用戶名/nadu/issues)
+- Email: allen951236@gmail.com
 
 ---
 
